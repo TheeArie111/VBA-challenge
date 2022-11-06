@@ -1,0 +1,148 @@
+Sub Ticker()
+
+
+
+'Set your variables
+'Ticker
+Dim Ticker As String
+
+'Variable for Summary Table
+Dim Summary_Table_Row As Integer
+Summary_Table_Row = 2
+
+Last Row
+Dim LR As Long
+
+LR = Cells(Rows.Count, 1).End(xlUp).Row
+
+'Loop through the stock data
+
+For i = 2 To LR
+
+    'Check if you're still within the same stock ticker name, if it is not...
+    If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+    
+        'Capture the ticker symbol
+        Ticker = Cells(i, 1).Value
+        
+        'Print the ticker symbol in the summary table
+        Cells(Summary_Table_Row, 9).Value = Ticker
+        
+         'Add one to the summary table row
+        Summary_Table_Row = Summary_Table_Row + 1
+        
+    Else
+    
+    End If
+    
+    Next i
+    
+End Sub
+----------------------------------------------------------------------
+
+Sub Total_Stock_Volume()
+
+
+'Set initial variable for holding the total stock volume
+Dim Total_Stock_Volume As LongLong
+Total_Stock_Volume = 0
+
+
+'Variable for Summary Table
+Dim Summary_Table_Row As Integer
+Summary_Table_Row = 2
+
+Last Row
+Dim LR As Long
+
+LR = Cells(Rows.Count, 1).End(xlUp).Row
+
+'Loop through the stock data
+
+For i = 2 To LR
+
+    'Check if you're still within the same stock ticker name, if it is not...
+    If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+    
+        'Add to the total stock volume
+        Total_Stock_Volume = Cells(i, 7).Value + Total_Stock_Volume
+    
+        'Print the total stock volume in the summary table
+        Cells(Summary_Table_Row, 12).Value = Total_Stock_Volume
+    
+        'Add one to the summary table row
+        Summary_Table_Row = Summary_Table_Row + 1
+        
+        'Reset Total stock
+        Total_Stock_Volume = 0
+        
+ 'Check if you're still within the same stock ticker name, if it IS...
+    Else
+    
+        'Add to the total stock volume
+        Total_Stock_Volume = Total_Stock_Volume + Cells(i, 7).Value
+
+        End If
+        
+        Next i
+        
+End Sub
+----------------------------------------------------------------
+
+Sub Yearly_Change()
+
+'Define variables
+Dim Close_Price As Double
+Dim Open_Price As Double
+Dim Yearly_Change As Double
+
+
+'Variable for Summary Table
+Dim Summary_Table_Row As Integer
+Summary_Table_Row = 2
+
+
+Last Row
+Dim LR As Long
+
+LR = Cells(Rows.Count, 1).End(xlUp).Row
+
+'Loop through the stock data
+
+For i = 2 To LR
+
+    'Check if you're still within the same stock ticker name, if it IS,...
+    
+    If Cells(i - 1, 1).Value <> Cells(i, 1).Value Then
+    
+        'capture the opening price
+        Open_Price = Cells(i, 3).Value
+        
+    'Check if you're still within the same stock ticker name, if it is NOT,...
+    ElseIf Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+    
+        'Capture the closing price
+        Close_Price = Cells(i, 6).Value
+        
+        'Calculate yearly change
+        Cells(Summary_Table_Row, 10).Value = Close_Price - Open_Price
+        
+        Yearly_Change = Close_Price - Open_Price
+        
+        
+        'Calculate the Percentage Change
+        Cells(Summary_Table_Row, 11).Value = (Yearly_Change / Open_Price) * 100
+        Selection.NumberFormat = "000.00%"
+        
+        
+        'Add one to the summary table row
+        Summary_Table_Row = Summary_Table_Row + 1
+        
+    End If
+    
+    Next i
+    
+End Sub
+    
+    
+
